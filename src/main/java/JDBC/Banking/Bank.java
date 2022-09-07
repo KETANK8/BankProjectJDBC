@@ -67,7 +67,7 @@ public class Bank {
 				if(id>0) { // IF ACCOUNT AND PASSWORD DETAIL CORRECT THEN USER CAN ACCESS BANK ACCOUNT
 					int cycle =0;
 					while(cycle<4) {
-						System.out.println("Press 1 - Print Account Detail \nPress 2 - Deposite Amount \nPress 3 - Withdraw Amount \nPress 4 - Log Out.");
+						System.out.println("Press 1 - Print Account Detail \nPress 2 - Deposit Amount \nPress 3 - Withdraw Amount \nPress 4 - Log Out.");
 						System.out.println("Enter Choice : ");
 						cycle = scan.nextInt();
 						

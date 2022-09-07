@@ -1,0 +1,118 @@
+/**
+ * @author Ketan Kumar
+ * Illustrating BANK MANAGEMENT SYSTEM TO CREATE BANK ACCOUNT ADD ACCOUNT DETAILS TO DATABASE AND PRINT DATA OF ONE OR ALL ACCOUNT USING DATA ACCESS OBJECT
+ * PERFORMING MONEY DEPOSIT AND MONEY WITHDRAWING FROM ACCOUNT BALANCE
+ *
+ */
+
+DISPLAYING PROGRAM OUTPUT
+
+Press 1 - Create a Bank Account 
+Press 2 - User Login 
+Press 3 - Print all Bank Account Data from DataBase 
+Press 4 - Exit
+ENTER CHOICE : 1
+Enter User Name : Ketan
+Set Account Password : 123456
+Enter Age : 22
+Enter Phone No : 9874563210
+Enter Account Balance : 50000
+1 rows affected.
+Press 1 - Create a Bank Account 
+Press 2 - User Login 
+Press 3 - Print all Bank Account Data from DataBase 
+Press 4 - Exit
+ENTER CHOICE : 1
+Enter User Name : Ram
+Set Account Password : 020202
+Enter Age : 22
+Enter Phone No : 0258963
+Enter Account Balance : 20000
+1 rows affected.
+Press 1 - Create a Bank Account 
+Press 2 - User Login 
+Press 3 - Print all Bank Account Data from DataBase 
+Press 4 - Exit
+ENTER CHOICE : 2
+Enter Account Holder Name : Ketan
+Enter Account Password : 123456
+Login Successfully.
+Press 1 - Print Account Detail 
+Press 2 - Deposit Amount 
+Press 3 - Withdraw Amount 
+Press 4 - Log Out.
+Enter Choice : 
+1
+
+Account No: 104  Account Holder Name: Ketan  Age: 22  Phone No: 9874563210  Account Balance: 50000
+Press 1 - Print Account Detail 
+Press 2 - Deposit Amount 
+Press 3 - Withdraw Amount 
+Press 4 - Log Out.
+Enter Choice : 
+2
+
+Enter Amount to Deposit : 5000
+Updated Account Balance : 55000
+Press 1 - Print Account Detail 
+Press 2 - Deposit Amount 
+Press 3 - Withdraw Amount 
+Press 4 - Log Out.
+Enter Choice : 
+3
+
+Enter Amount to WithDraw : 10000
+Updated Account Balance : 45000
+Press 1 - Print Account Detail 
+Press 2 - Deposit Amount 
+Press 3 - Withdraw Amount 
+Press 4 - Log Out.
+Enter Choice : 
+1
+
+Account No: 104  Account Holder Name: Ketan  Age: 22  Phone No: 9874563210  Account Balance: 45000
+Press 1 - Print Account Detail 
+Press 2 - Deposit Amount 
+Press 3 - Withdraw Amount 
+Press 4 - Log Out.
+Enter Choice : 
+4
+
+Successfully Logged Out
+
+Press 1 - Create a Bank Account 
+Press 2 - User Login 
+Press 3 - Print all Bank Account Data from DataBase 
+Press 4 - Exit
+ENTER CHOICE : 2
+Enter Account Holder Name : Ram
+Enter Account Password : 123
+Incorrect UserName or Password!!!
+
+Press 1 - Create a Bank Account 
+Press 2 - User Login 
+Press 3 - Print all Bank Account Data from DataBase 
+Press 4 - Exit
+ENTER CHOICE : 2
+Enter Account Holder Name : ra
+Enter Account Password : 123
+Invalid Account!!!
+Press 1 - Create a Bank Account 
+Press 2 - User Login 
+Press 3 - Print all Bank Account Data from DataBase 
+Press 4 - Exit
+ENTER CHOICE : 3
+Enter Admin Name : root
+Enter Admin Password : 142307
+
+
+----------Account List----------
+Account No: 104  Account Holder Name: Ketan  Age: 22  Phone No: 9874563210  Account Balance: 45000
+
+Account No: 105  Account Holder Name: Ram  Age: 22  Phone No: 0258963  Account Balance: 20000
+
+Press 1 - Create a Bank Account 
+Press 2 - User Login 
+Press 3 - Print all Bank Account Data from DataBase 
+Press 4 - Exit
+ENTER CHOICE : 4
