@@ -36,6 +36,9 @@ public class Bank {
 		
 		
 		switch(choice) {
+		
+			// OUTER CASE 1
+			// TO CREATE AN USER ACCOUNT
 			case 1->{
 				
 				//CREATING BANK CUSTOMER OBJECT TO  STORE DETAILS
@@ -60,6 +63,8 @@ public class Bank {
 					System.out.println("\nAccount Created Successfully");
 			}
 
+			// OUTER CASE 2
+			// TO LOGIN INTO USER ACCOUNT
 			case 2->{
 				System.out.print("\nEnter Account Holder Name : ");
 				csmName = scan.next();
@@ -82,12 +87,17 @@ public class Bank {
 						
 						switch(cycle) {
 						
+						// INNER CASE 1
+						// TO PRINT USER ACCOUNT DETAIL
 						case 1 ->{
 							// CALLING GET ACCOUNT METHOD TO ACCESS AN BANK ACCOUNT DETAILS
 							BankCustomer bcsm= BDAO.getAccount(id);
 							System.out.println("\nAccount No: "+bcsm.csmId+"  Account Holder Name: "+bcsm.csmName+"  Age: "+bcsm.csmAge+"  Phone No: "+bcsm.csmPhone+"  Account Balance: "+bcsm.csmAccBal);
 						}
 						
+						
+						//INNER CASE 2
+						// TO DEPOSIT AMOUNT IN ACCOUNT 
 						case 2->{
 							int amt = 0;
 							System.out.print("\nEnter Amount to Deposit : ");
@@ -98,7 +108,8 @@ public class Bank {
 							System.out.println("\nUpdated Account Balance : "+ret);
 						}
 						
-						
+						// INNER CASE 3
+						// TO WITHDRAW AMOUNT FROM BALANCE
 						case 3->{
 							int amt = 0;
 							System.out.print("\nEnter Amount to WithDraw : ");
@@ -113,6 +124,7 @@ public class Bank {
 						}
 						
 						// INNER CASE 4
+						// TO DELETE USER ACCOUNT
 						case 4->{
 							System.out.print("\nEnter Account No: ");
 							csmId = scan.nextInt();
@@ -177,6 +189,9 @@ public class Bank {
 				
 			}
 			
+			// OUTER CASE 3
+			// TO PRINT ALL USER ACCOUNT DETAIL
+			// CAN ONLY ACCESS BY DATABASE ADMIN
 			case 3->{
 				System.out.print("\nEnter Admin Name : ");
 				csmName = scan.next();
@@ -199,14 +214,9 @@ public class Bank {
 				}
 			}
 			// IF GIVEN NAME DOES NOT MATCH WITH ADMIN NAME
-			else {System.out.println("\nWrong User Name!!!");}
-		
-			
-				
+			else {System.out.println("\nWrong User Name!!!");}	
 			}
 		}
-		
-		
 		}
 		scan.close();
 	}
