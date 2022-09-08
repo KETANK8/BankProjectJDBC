@@ -27,18 +27,19 @@ public class Bank {
 		// CALLING CONNECT METHOD TO ACCESS DATABASE
 		BDAO.connect();
 
-		
+		outer:
 		while(choice<4) {
-		System.out.println("Press 1 - Create a Bank Account \nPress 2 - User Login \nPress 3 - Print all Bank Account Data from DataBase \nPress 4 - Exit");
+		System.out.println("\nPress 1 - Create a Bank Account \nPress 2 - User Login \nPress 3 - Print all Bank Account Data from DataBase \nPress 4 - Exit");
 		System.out.print("ENTER CHOICE : ");
 		choice = scan.nextInt();
+		
 		
 		switch(choice) {
 			case 1->{
 				
 				//CREATING BANK CUSTOMER OBJECT TO  STORE DETAILS
 				BankCustomer bcsm = new BankCustomer();
-				System.out.print("Enter User Name : ");
+				System.out.print("\nEnter User Name : ");
 				csmName = scan.next();// ASKING USER TO INPUT ACCOUNT HOLDER NAME
 				bcsm.csmName = csmName;
 				System.out.print("Set Account Password : ");
@@ -57,7 +58,7 @@ public class Bank {
 			}
 
 			case 2->{
-				System.out.print("Enter Account Holder Name : ");
+				System.out.print("\nEnter Account Holder Name : ");
 				csmName = scan.next();
 				System.out.print("Enter Account Password : ");
 				csmPswrd = scan.next();
@@ -66,12 +67,15 @@ public class Bank {
 				int id = BDAO.userLogin(csmName,csmPswrd);
 				if(id>0) { // IF ACCOUNT AND PASSWORD DETAIL CORRECT THEN USER CAN ACCESS BANK ACCOUNT
 					int cycle =0;
-					while(cycle<4) {
-						System.out.println("Press 1 - Print Account Detail \nPress 2 - Deposit Amount \nPress 3 - Withdraw Amount \nPress 4 - Log Out.");
+					
+					inner:
+					while(cycle<5) {
+						System.out.println("\nPress 1 - Print Account Detail \nPress 2 - Deposit Amount \nPress 3 - Withdraw Amount \nPress 4 - Delete Your Account \nPress 5 - Log Out.");
 						System.out.println("Enter Choice : ");
 						cycle = scan.nextInt();
 						
 						// DIFFERENT TASK CAN BE PERFORM BY USER IN USER BANK ACCOUNT
+						
 						switch(cycle) {
 						
 						case 1 ->{
@@ -99,6 +103,20 @@ public class Bank {
 							BDAO.withDraw(id,amt);
 						}
 						
+						case 4->{
+							System.out.print("\nEnter Account No: ");
+							csmId = scan.nextInt();
+							System.out.print("Enter Account Holder Name : ");
+							csmName = scan.next();
+							System.out.print("Enter Account Password : ");
+							csmPswrd = scan.next();
+							
+							// CALLING DELETE ACCOUNT METHOD
+							// TO DELETE CURRENT ACCOUNT BY VERIFYING ACCOUNT NO , NAME AND PASSWORD
+							BDAO.deleteAccount(id, csmId, csmName, csmPswrd);
+							continue outer;
+						}
+						
 						}
 					}
 					System.out.println("\nSuccessfully Logged Out\n");
@@ -107,7 +125,7 @@ public class Bank {
 			}
 			
 			case 3->{
-				System.out.print("Enter Admin Name : ");
+				System.out.print("\nEnter Admin Name : ");
 				csmName = scan.next();
 				System.out.print("Enter Admin Password : ");
 				csmPswrd = scan.next();

@@ -39,7 +39,9 @@ Connection con = null;
 		prepstm.setInt(5,csm.csmAccBal); // PUTTING ACCOUNT BALANCE ON FIFTH MARKS
 		
 		int count = prepstm.executeUpdate();// UPDATING/ADDING THE BANK ACCOUNT DATA IN DATABASE
+		System.out.println("\nAccount Created Successfully");
 		System.out.println(count+" rows affected.");
+		
 	}
 	
 	//Method 3
@@ -77,7 +79,7 @@ Connection con = null;
 				return csmId;
 			}
 			else {
-				System.out.println("Incorret UserName or Password!!!");
+				System.out.println("Incorrect UserName or Password!!!");
 				return 0;
 			}
 		}
@@ -123,7 +125,7 @@ Connection con = null;
 			
 			// UPDATING USER ACCOUNT BALANCE
 			int amount = wdrawStm.executeUpdate("update customerDetail set csmAccBal ="+balance+" where csmId ="+csmId);
-			System.out.println("Updated Account Balance : "+balance);
+			System.out.println("\nUpdated Account Balance : "+balance);
 	}
 	
 	
@@ -141,16 +143,51 @@ Connection con = null;
 		
 				// ACCESSING DATABASE TO THE LAST ROW
 				while(set.next()) {
-					String std= "Account No: "+set.getInt("csmId")+"  Account Holder Name: "+set.getString("csmName")+"  Age: "+set.getInt("csmAge")+"  Phone No: "+set.getString("csmPhone")+"  Account Balance: "+set.getInt("csmAccBal")+"\n";
+					String std= "\nAccount No: "+set.getInt("csmId")+"  Account Holder Name: "+set.getString("csmName")+"  Age: "+set.getInt("csmAge")+"  Phone No: "+set.getString("csmPhone")+"  Account Balance: "+set.getInt("csmAccBal")+"\n";
 					System.out.println(std);// PRINTING THE ACCOUNT DATA
 				}
 		
 			}
 			// IF GIVEN PASSWORD DOES NOT MATCH WITH ADMIN PASSWORD
-			else {System.out.println("Wrong Password!!!");}
+			else {System.out.println("\nWrong Password!!!");}
 		}
 		// IF GIVEN NAME DOES NOT MATCH WITH ADMIN NAME
-		else {System.out.println("Wrong User Name!!!");}
+		else {System.out.println("\nWrong User Name!!!");}
+	}
+	
+	// METHOD 8
+	// PERFORM ACCOUNT DELETION 
+	// TAKE ACCOUNT NO, ACCOUNT HOLDER NAME AND ACCOUNT PASSWOORD AS INPUT
+	// CHECK LOGIN CREDENTIALS BEFORE DELETING ACCOUNT
+	public void deleteAccount(int id,int accNo,String csmName,String csmPswrd) throws Exception {
+		
+		// CHECKING ACCOUNT NO WITH THE INPUT ACCOUNT NO
+		if(id==accNo) {
+		Statement stm = con.createStatement();
+		ResultSet set = stm.executeQuery("select * from customerDetail where csmName = '"+csmName+"'");
+		
+			// CHECKING USERNAME
+			if(set.next()) {
+			
+				String csmPassword = set.getString(3);
+				
+				// CHECKING PASSWORD
+				if(csmPassword.equals(csmPswrd)) {
+					Statement Deletestm = con.createStatement();
+					Deletestm.executeUpdate("DELETE FROM customerDetail WHERE csmId="+accNo);
+					System.out.println("\nAccount Deleted Successfully.");
+				}
+				else {
+					System.out.println("\nIncorrect UserName or Password!!!");
+				}
+			}
+			else {
+				System.out.println("\nInvalid Account!!!");
+			}
+		}
+		else {
+			System.out.println("\nInvalid Account No!!!");
+		}
 	}
 
 
