@@ -69,8 +69,8 @@ public class Bank {
 					int cycle =0;
 					
 					inner:
-					while(cycle<5) {
-						System.out.println("\nPress 1 - Print Account Detail \nPress 2 - Deposit Amount \nPress 3 - Withdraw Amount \nPress 4 - Delete Your Account \nPress 5 - Log Out.");
+					while(cycle<6) {
+						System.out.println("\nPress 1 - Print Account Detail \nPress 2 - Deposit Amount \nPress 3 - Withdraw Amount \nPress 4 - Delete Your Account \nPress 5 - Change Your PassWord \nPress 6 - Log Out.");
 						System.out.println("Enter Choice : ");
 						cycle = scan.nextInt();
 						
@@ -114,6 +114,20 @@ public class Bank {
 							// CALLING DELETE ACCOUNT METHOD
 							// TO DELETE CURRENT ACCOUNT BY VERIFYING ACCOUNT NO , NAME AND PASSWORD
 							BDAO.deleteAccount(id, csmId, csmName, csmPswrd);
+							continue outer;
+						}
+						
+						case 5->{
+							System.out.print("Enter Account Holder Name : ");
+							csmName = scan.next();
+							System.out.print("Enter Current Password : ");
+							csmPswrd = scan.next();
+							System.out.print("Enter New Password : ");
+							String Pswrd = scan.next();
+							
+							// CALLING CHANGE PASSWORD METHOD
+							// TO CHANGE OLD PASSWORD WITH NEW PASSWORD
+							BDAO.changePswrd(id, csmName, csmPswrd, Pswrd);
 							continue outer;
 						}
 						

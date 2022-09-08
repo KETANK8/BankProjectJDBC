@@ -75,16 +75,16 @@ Connection con = null;
 			String csmPassword = set.getString(3);
 			if(csmPassword.equals(csmPswrd)) {
 				int csmId = set.getInt(1);
-				System.out.println("Login Successfully.");
+				System.out.println("\nLogin Successfully.");
 				return csmId;
 			}
 			else {
-				System.out.println("Incorrect UserName or Password!!!");
+				System.out.println("\nIncorrect UserName or Password!!!");
 				return 0;
 			}
 		}
 		else {
-			System.out.println("Invalid Account!!!");
+			System.out.println("\nAccount not Exist!!! \nRegister Your Account!!!");
 			return -1;
 		}
 	}
@@ -182,7 +182,7 @@ Connection con = null;
 				}
 			}
 			else {
-				System.out.println("\nInvalid Account!!!");
+				System.out.println("\nInvalid Account Holder Name!!!");
 			}
 		}
 		else {
@@ -190,5 +190,37 @@ Connection con = null;
 		}
 	}
 
+	// Method 9
+	// METHOD TO CHANGE PASSWORD  WITH NEW PASSWORD
+	// LOGIN AGAIN TO CHECK PASSWORD
+	public void changePswrd(int id,String csmName,String csmPswrd,String pswrd)throws Exception{
+		
+		Statement stm = con.createStatement();
+		ResultSet set = stm.executeQuery("select * from customerDetail where csmName = '"+csmName+"'");
+		
+			// CHECKING USERNAME
+			if(set.next()) {
+			
+				String csmPassword = set.getString(3);
+				
+				// CHECKING PASSWORD
+				if(csmPassword.equals(csmPswrd)) {
+					if(csmPassword.equals(pswrd)) {
+						System.out.println("\nPassword can not Change!!! \nOld Password and New Password can not be same");
+					}
+					else {
+					Statement Changestm = con.createStatement();
+					Changestm.executeUpdate("update customerDetail set csmPassword ="+pswrd+" where csmId ="+id);
+					System.out.println("\nPassWord Successfully Changed. \nLogin Again with New Password!!");
+					}
+				}
+				else {
+					System.out.println("\nIncorrect UserName or Password!!!");
+				}
+			}
+			else {
+				System.out.println("\nInvalid Account!!!");
+			}
+	}
 
 }
