@@ -7,6 +7,7 @@
 
 package JDBC.Banking;
 
+import java.util.List;
 import java.util.Scanner;
 
 import BankingDAO.BankCustomer;
@@ -54,7 +55,9 @@ public class Bank {
 				System.out.print("Enter Account Balance : ");
 				csmAccBal = scan.nextInt();// ASKING USER TO ACCOUNT BALANCE
 				bcsm.csmAccBal = csmAccBal;
-				BDAO.setAccount(bcsm);// CALLING SET ACCOUNT METHOD TO CREATE BANK ACCOUNT AND ADD DATA IN DATABASE
+				int set = BDAO.setAccount(bcsm);// CALLING SET ACCOUNT METHOD TO CREATE BANK ACCOUNT AND ADD DATA IN DATABASE
+				if (set==1)
+					System.out.println("\nAccount Created Successfully");
 			}
 
 			case 2->{
@@ -66,6 +69,7 @@ public class Bank {
 				// CAKKING USER LOGIN METHOD TO VERIFY USER ACCOUNT
 				int id = BDAO.userLogin(csmName,csmPswrd);
 				if(id>0) { // IF ACCOUNT AND PASSWORD DETAIL CORRECT THEN USER CAN ACCESS BANK ACCOUNT
+					System.out.println("\nLogin Successfully.");
 					int cycle =0;
 					
 					inner:
@@ -90,9 +94,10 @@ public class Bank {
 							amt = scan.nextInt();
 							
 							// CALLING DEPOSIT METHOD TO ADD AMOUNT IN ACCOUNT BALANCE
-							BDAO.Deposit(id,amt);
-							
+							int ret = BDAO.Deposit(id,amt);
+							System.out.println("\nUpdated Account Balance : "+ret);
 						}
+						
 						
 						case 3->{
 							int amt = 0;
@@ -100,9 +105,14 @@ public class Bank {
 							amt = scan.nextInt();
 							
 							// CALLING WITHDRAW METHOD TO REMOVE AMOUNT FROM USER ACCOUNT BALANCE
-							BDAO.withDraw(id,amt);
+							int ret = BDAO.withDraw(id,amt);
+							if(ret>0)
+								System.out.println("Updated Account Balance : "+ret);
+							else
+								System.out.println("Insufficient Account Balance.");
 						}
 						
+						// INNER CASE 4
 						case 4->{
 							System.out.print("\nEnter Account No: ");
 							csmId = scan.nextInt();
@@ -113,10 +123,23 @@ public class Bank {
 							
 							// CALLING DELETE ACCOUNT METHOD
 							// TO DELETE CURRENT ACCOUNT BY VERIFYING ACCOUNT NO , NAME AND PASSWORD
-							BDAO.deleteAccount(id, csmId, csmName, csmPswrd);
+							int ret = BDAO.deleteAccount(id, csmId, csmName, csmPswrd);
+							if(ret>0) {
+								System.out.println("\nAccount Deleted Successfully.");
+							}
+							else if(ret==0) {
+								System.out.println("\nIncorrect UserName or Password!!!");
+							}
+							else if(ret== -1) {
+								System.out.println("\nInvalid Account Holder Name!!!");
+							}
+							else {
+								System.out.println("\nInvalid Account No!!!");
+							}
 							continue outer;
 						}
 						
+						// INNER CASE 5
 						case 5->{
 							System.out.print("Enter Account Holder Name : ");
 							csmName = scan.next();
@@ -127,7 +150,19 @@ public class Bank {
 							
 							// CALLING CHANGE PASSWORD METHOD
 							// TO CHANGE OLD PASSWORD WITH NEW PASSWORD
-							BDAO.changePswrd(id, csmName, csmPswrd, Pswrd);
+							int ret = BDAO.changePswrd(id, csmName, csmPswrd, Pswrd);
+							if(ret>0) {
+								System.out.println("\nPassword can not Change!!! \nOld Password and New Password can not be same");
+							}
+							else if(ret==0) {
+								System.out.println("\nPassWord Successfully Changed. \nLogin Again with New Password!!");
+							}
+							else if(ret== -1) {
+								System.out.println("\nIncorrect UserName or Password!!!");
+							}
+							else {
+								System.out.println("\nInvalid Account!!!");
+							}
 							continue outer;
 						}
 						
@@ -135,6 +170,10 @@ public class Bank {
 					}
 					System.out.println("\nSuccessfully Logged Out\n");
 				}
+				else if(id==0)
+					System.out.println("\nIncorrect UserName or Password!!!");
+				else
+					System.out.println("\nAccount not Exist!!! \nRegister Your Account!!!");
 				
 			}
 			
@@ -143,9 +182,27 @@ public class Bank {
 				csmName = scan.next();
 				System.out.print("Enter Admin Password : ");
 				csmPswrd = scan.next();
-				// CALLING GET ALL DATA
-				// TO PRITNT DATA OF EVERY USER FROM DATABASE
-				BDAO.getAllData(csmName,csmPswrd);
+				
+				if(csmName.equals("root")) {
+					if(csmPswrd.equals("142307")) {
+						
+						List<BankCustomer> consumer;
+						// CALLING GET ALL DATA
+						// TO PRITNT DATA OF EVERY USER FROM DATABASE
+						consumer = BDAO.getAllData(csmName,csmPswrd);
+						for(BankCustomer csm : consumer) {
+							System.out.println("\nAccount No: "+csm.csmId+"  Account Holder Name: "+csm.csmName+"  Age: "+csm.csmAge+"  Phone No: "+csm.csmPhone+"  Account Balance: "+csm.csmAccBal+"\n");
+						}
+				}
+				// IF GIVEN PASSWORD DOES NOT MATCH WITH ADMIN PASSWORD
+				else {System.out.println("\nWrong Password!!!");
+				}
+			}
+			// IF GIVEN NAME DOES NOT MATCH WITH ADMIN NAME
+			else {System.out.println("\nWrong User Name!!!");}
+		
+			
+				
 			}
 		}
 		

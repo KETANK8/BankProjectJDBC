@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class BankDao {
@@ -27,7 +29,7 @@ Connection con = null;
 	
 	//Method 2
 	// METHOD TO ADD NEW BANK ACCOUNT IN DATABASE
-	public void setAccount(BankCustomer csm) throws Exception {
+	public int setAccount(BankCustomer csm) throws Exception {
 		String query = ("insert into customerDetail(csmName,csmPassword,csmAge,csmPhone,csmAccBal) values(?,?,?,?,?)");
 		PreparedStatement prepstm = con.prepareStatement(query);
 		
@@ -39,8 +41,8 @@ Connection con = null;
 		prepstm.setInt(5,csm.csmAccBal); // PUTTING ACCOUNT BALANCE ON FIFTH MARKS
 		
 		int count = prepstm.executeUpdate();// UPDATING/ADDING THE BANK ACCOUNT DATA IN DATABASE
-		System.out.println("\nAccount Created Successfully");
-		System.out.println(count+" rows affected.");
+		
+		return count;
 		
 	}
 	
@@ -75,23 +77,20 @@ Connection con = null;
 			String csmPassword = set.getString(3);
 			if(csmPassword.equals(csmPswrd)) {
 				int csmId = set.getInt(1);
-				System.out.println("\nLogin Successfully.");
 				return csmId;
 			}
 			else {
-				System.out.println("\nIncorrect UserName or Password!!!");
 				return 0;
 			}
 		}
 		else {
-			System.out.println("\nAccount not Exist!!! \nRegister Your Account!!!");
 			return -1;
 		}
 	}
 	
 	// METHOD 5
 	// METHOD TO WITHDRAW MONEY FROM USER ACCOUNT BALANCE
-	public void withDraw (int csmId,int csmAmount) throws Exception {
+	public int withDraw (int csmId,int csmAmount) throws Exception {
 		Statement stm = con.createStatement();
 		
 		// GETTING USER DETAIL THROUGH ACCOUNT NO
@@ -104,16 +103,16 @@ Connection con = null;
 			
 			// UPDATING USER ACCOUNT BALANCE
 			int amount = wdrawStm.executeUpdate("update customerDetail set csmAccBal ="+balance+" where csmId ="+csmId);
-			System.out.println("Updated Account Balance : "+balance);
+			return balance;
 		}
 		else {
-			System.out.println("Insufficient Account Balance.");
+			return 0;
 		}
 	}
 	
 	// METHOD 6
 	// METHOD TO ADD OR DEPOSIT MONEY IN USER ACCOUNT BALANCE
-	public void Deposit (int csmId,int csmAmount) throws Exception {
+	public int Deposit (int csmId,int csmAmount) throws Exception {
 		Statement stm = con.createStatement();
 		
 		// GETTING USER DETAIL THROUGH ACCOUNT NO
@@ -125,16 +124,16 @@ Connection con = null;
 			
 			// UPDATING USER ACCOUNT BALANCE
 			int amount = wdrawStm.executeUpdate("update customerDetail set csmAccBal ="+balance+" where csmId ="+csmId);
-			System.out.println("\nUpdated Account Balance : "+balance);
+			return balance;
 	}
 	
 	
 	//Method 7
 	// METHOD TO PRINT ALL EMPLOYEES DETAILS
-	public void getAllData(String csmName,String csmPswrd) throws SQLException {
+	public List<BankCustomer> getAllData(String csmName,String csmPswrd) throws SQLException {
+		List<BankCustomer> list = new ArrayList<BankCustomer>();
+        
 		
-		if(csmName.equals("root")) {
-			if(csmPswrd.equals("142307")) {
 				Statement stm = con.createStatement();
 		
 				ResultSet set = stm.executeQuery("select * from customerDetail");
@@ -143,23 +142,24 @@ Connection con = null;
 		
 				// ACCESSING DATABASE TO THE LAST ROW
 				while(set.next()) {
-					String std= "\nAccount No: "+set.getInt("csmId")+"  Account Holder Name: "+set.getString("csmName")+"  Age: "+set.getInt("csmAge")+"  Phone No: "+set.getString("csmPhone")+"  Account Balance: "+set.getInt("csmAccBal")+"\n";
-					System.out.println(std);// PRINTING THE ACCOUNT DATA
+					BankCustomer csm = new BankCustomer();
+					csm.csmId = set.getInt(1);// GIVING COLOUMN NO TO ACCESS ACCOUNT NO
+					csm.csmName = set.getString(2);// GIVING COLOUMN NO TO ACCESS NAME
+					csm.csmPassword=set.getString(3);// GIVING COLOUMN NO TO ACCESS PASSWORD
+					csm.csmAge = set.getInt(4);// GIVING COLOUMN NO TO ACCESS AGE
+					csm.csmPhone = set.getString(5);// GIVING COLOUMN NO TO ACCESS PHONE NO
+					csm.csmAccBal = set.getInt(6);// GIVING COLOUMN NO TO ACCESS ACCOUNT BALANCE
+					list.add(csm);
 				}
-		
-			}
-			// IF GIVEN PASSWORD DOES NOT MATCH WITH ADMIN PASSWORD
-			else {System.out.println("\nWrong Password!!!");}
-		}
-		// IF GIVEN NAME DOES NOT MATCH WITH ADMIN NAME
-		else {System.out.println("\nWrong User Name!!!");}
-	}
+				return list;
+	}	
+			
 	
 	// METHOD 8
 	// PERFORM ACCOUNT DELETION 
 	// TAKE ACCOUNT NO, ACCOUNT HOLDER NAME AND ACCOUNT PASSWOORD AS INPUT
 	// CHECK LOGIN CREDENTIALS BEFORE DELETING ACCOUNT
-	public void deleteAccount(int id,int accNo,String csmName,String csmPswrd) throws Exception {
+	public int deleteAccount(int id,int accNo,String csmName,String csmPswrd) throws Exception {
 		
 		// CHECKING ACCOUNT NO WITH THE INPUT ACCOUNT NO
 		if(id==accNo) {
@@ -175,25 +175,25 @@ Connection con = null;
 				if(csmPassword.equals(csmPswrd)) {
 					Statement Deletestm = con.createStatement();
 					Deletestm.executeUpdate("DELETE FROM customerDetail WHERE csmId="+accNo);
-					System.out.println("\nAccount Deleted Successfully.");
+					return 1;
 				}
 				else {
-					System.out.println("\nIncorrect UserName or Password!!!");
+					return 0;
 				}
 			}
 			else {
-				System.out.println("\nInvalid Account Holder Name!!!");
+				return -1;
 			}
 		}
 		else {
-			System.out.println("\nInvalid Account No!!!");
+			return -2;
 		}
 	}
 
 	// Method 9
 	// METHOD TO CHANGE PASSWORD  WITH NEW PASSWORD
 	// LOGIN AGAIN TO CHECK PASSWORD
-	public void changePswrd(int id,String csmName,String csmPswrd,String pswrd)throws Exception{
+	public int changePswrd(int id,String csmName,String csmPswrd,String pswrd)throws Exception{
 		
 		Statement stm = con.createStatement();
 		ResultSet set = stm.executeQuery("select * from customerDetail where csmName = '"+csmName+"'");
@@ -206,20 +206,20 @@ Connection con = null;
 				// CHECKING PASSWORD
 				if(csmPassword.equals(csmPswrd)) {
 					if(csmPassword.equals(pswrd)) {
-						System.out.println("\nPassword can not Change!!! \nOld Password and New Password can not be same");
+						return 1;
 					}
 					else {
 					Statement Changestm = con.createStatement();
 					Changestm.executeUpdate("update customerDetail set csmPassword ="+pswrd+" where csmId ="+id);
-					System.out.println("\nPassWord Successfully Changed. \nLogin Again with New Password!!");
+					return 0;
 					}
 				}
 				else {
-					System.out.println("\nIncorrect UserName or Password!!!");
+					return -1;
 				}
 			}
 			else {
-				System.out.println("\nInvalid Account!!!");
+				return -2;
 			}
 	}
 
