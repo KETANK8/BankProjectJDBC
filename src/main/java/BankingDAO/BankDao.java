@@ -6,12 +6,7 @@
  */
 package BankingDAO;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +25,17 @@ Connection con = null;
 	//Method 2
 	// METHOD TO ADD NEW BANK ACCOUNT IN DATABASE
 	public int setAccount(BankCustomer csm) throws Exception {
-		String query = ("insert into customerDetail(csmName,csmPassword,csmAge,csmPhone,csmAccBal) values(?,?,?,?,?)");
-		PreparedStatement prepstm = con.prepareStatement(query);
-		
+		 
+		String query = "select * from customerDetail where csmName = '"+csm.csmName+"'";
+		Statement stm = con.createStatement();
+		ResultSet set = stm.executeQuery(query);
+		if(set.next()) {
+			return -1;
+		}
+		else {
+		String query2 = ("insert into customerDetail(csmName,csmPassword,csmAge,csmPhone,csmAccBal) values(?,?,?,?,?)");
+		PreparedStatement prepstm = con.prepareStatement(query2);
+
 		//Putting value on the index of question mark
 		prepstm.setString(1,csm.csmName); // PUTTING NAME ON FIRST MARK
 		prepstm.setString(2,csm.csmPassword);// PUTTING PASSWORD ON SECOND MARK
@@ -43,7 +46,7 @@ Connection con = null;
 		int count = prepstm.executeUpdate();// UPDATING/ADDING THE BANK ACCOUNT DATA IN DATABASE
 		
 		return count;
-		
+		}
 	}
 	
 	//Method 3
@@ -96,13 +99,14 @@ Connection con = null;
 		// GETTING USER DETAIL THROUGH ACCOUNT NO
 		ResultSet set = stm.executeQuery("select * from customerDetail where csmId= "+csmId);
 		set.next();
-		int balance = set.getInt(6);// ACCESSING USER ACCOUNT BALANCE
+		int balance = set.getInt(6);// ACCESSING USER ACCOUNT BALANCE	
+		set.close();
 		if(balance>csmAmount) {
 			balance -= csmAmount;// WITHDRAWING MONEY FROM ACCOUNT BALANCE
 			Statement wdrawStm = con.createStatement();
 			
 			// UPDATING USER ACCOUNT BALANCE
-			int amount = wdrawStm.executeUpdate("update customerDetail set csmAccBal ="+balance+" where csmId ="+csmId);
+			wdrawStm.executeUpdate("update customerDetail set csmAccBal ="+balance+" where csmId ="+csmId);
 			return balance;
 		}
 		else {
@@ -123,10 +127,9 @@ Connection con = null;
 			Statement wdrawStm = con.createStatement();
 			
 			// UPDATING USER ACCOUNT BALANCE
-			int amount = wdrawStm.executeUpdate("update customerDetail set csmAccBal ="+balance+" where csmId ="+csmId);
+			wdrawStm.executeUpdate("update customerDetail set csmAccBal ="+balance+" where csmId ="+csmId);
 			return balance;
 	}
-	
 	
 	//Method 7
 	// METHOD TO PRINT ALL EMPLOYEES DETAILS
@@ -154,7 +157,6 @@ Connection con = null;
 				return list;
 	}	
 			
-	
 	// METHOD 8
 	// PERFORM ACCOUNT DELETION 
 	// TAKE ACCOUNT NO, ACCOUNT HOLDER NAME AND ACCOUNT PASSWOORD AS INPUT
@@ -164,13 +166,13 @@ Connection con = null;
 		// CHECKING ACCOUNT NO WITH THE INPUT ACCOUNT NO
 		if(id==accNo) {
 		Statement stm = con.createStatement();
-		ResultSet set = stm.executeQuery("select * from customerDetail where csmName = '"+csmName+"'");
+		ResultSet set = stm.executeQuery("select * from customerDetail where csmId="+id+" and csmName = '"+csmName+"'");
 		
 			// CHECKING USERNAME
 			if(set.next()) {
 			
 				String csmPassword = set.getString(3);
-				
+				set.close();
 				// CHECKING PASSWORD
 				if(csmPassword.equals(csmPswrd)) {
 					Statement Deletestm = con.createStatement();
@@ -208,7 +210,7 @@ Connection con = null;
 					if(csmPassword.equals(pswrd)) {
 						return 1;
 					}
-					else {
+					else{
 					Statement Changestm = con.createStatement();
 					Changestm.executeUpdate("update customerDetail set csmPassword ="+pswrd+" where csmId ="+id);
 					return 0;

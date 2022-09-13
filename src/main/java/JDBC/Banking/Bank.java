@@ -61,6 +61,8 @@ public class Bank {
 				int set = BDAO.setAccount(bcsm);// CALLING SET ACCOUNT METHOD TO CREATE BANK ACCOUNT AND ADD DATA IN DATABASE
 				if (set==1)
 					System.out.println("\nAccount Created Successfully");
+				else
+					System.out.println("\nUserName Already Exist!!!");
 			}
 
 			// OUTER CASE 2
@@ -165,6 +167,7 @@ public class Bank {
 							int ret = BDAO.changePswrd(id, csmName, csmPswrd, Pswrd);
 							if(ret>0) {
 								System.out.println("\nPassword can not Change!!! \nOld Password and New Password can not be same");
+								continue inner;
 							}
 							else if(ret==0) {
 								System.out.println("\nPassWord Successfully Changed. \nLogin Again with New Password!!");
