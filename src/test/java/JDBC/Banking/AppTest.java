@@ -1,3 +1,9 @@
+/**
+ * @author Ketan Kumar
+ * Illustrating TESTING OF BANK MANAGEMENT SYSTEM TEST CASE TO CREATE BANK ACCOUNT ADD ACCOUNT DETAILS TO DATABASE USING JUNIT TESTING
+ * PERFORMING TESTING OF MONEY DEPOSIT AND MONEY WITHDRAWING FROM ACCOUNT BALANCE
+ *
+ */
 package JDBC.Banking;
 
 import static org.junit.Assert.assertEquals;
@@ -16,9 +22,6 @@ import BankingDAO.BankDao;
 
 
 class AppTest{
-	// CREATING OBJECT OF BANK DAO
-
-	
 	
 	@Test
 	@Order(1)
