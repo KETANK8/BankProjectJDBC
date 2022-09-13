@@ -59,17 +59,12 @@ class AppTest{
 		
 		//Test Case for wrong account user Name in data base
 		assertEquals(-1,BDAO.userLogin("Prem", "80808"));
-		//			expected result		Name , Password
-
 		
 		//Test Case for wrong account password in data base
 		assertEquals(0,BDAO.userLogin("Ketan", "080808"));
-		//			expected result		Name , Password
 		
 		//Test Case for Correct account Name and PassWord in data base
 		assertEquals(100,BDAO.userLogin("Ketan", "80808"));
-		//			expected Id			  Name , Password
-
 	}
 	
 	@Test
@@ -83,12 +78,9 @@ class AppTest{
 		assertEquals(0,BDAO.withDraw(106, 555000));
 		
 		//Test Case where withdraw amount more than balance
-		assertEquals(70000,BDAO.withDraw(106, 5000));
-		//			expected Balance	id , amount to deposit
-		
+		assertEquals(70000,BDAO.withDraw(106, 5000));		
 	}
 	
-
 	@Test
 	@Order(5)
 	void testDeposit() throws Exception {		
@@ -99,8 +91,6 @@ class AppTest{
 		
 		//Test Case where withdraw amount more than balance
 		assertEquals(50000,BDAO.Deposit(105, 5000));
-		//			expected Balance	id , amount to deposit
-
 	}
 
 	@Test
@@ -115,20 +105,15 @@ class AppTest{
 			
 		//Test Case for wrong account Password in data base
 		() -> assertEquals(-1,BDAO.changePswrd(106,"amit", "000000", "000000")),
-		//			expected result		Name , Password
 	
 		//Test Case for same account password in data base
 		() -> assertEquals(1,BDAO.changePswrd(106, "amit", "80808", "80808")),
-		//			expected result		Name , Password
 		
 		//Test Case for wrong account user Name in data base
 		() -> assertEquals(-2,BDAO.changePswrd(106, "Prem", "80808", "80808")),
-		//			expected Id			  Name , Password
-	
+
 		//Test Case for Correct account Name and PassWord in data base
 		() -> assertEquals(0,BDAO.changePswrd(106, "amit", "80808","123456"))
-		//			expected result		Name , Password
-
 		);
 	}
 	
@@ -142,20 +127,15 @@ class AppTest{
 		
 		//Test Case for wrong account name in data base
 		assertEquals(-1,BDAO.deleteAccount(103, 103,"Prem", "080808"));
-		//			expected result		Name , Password
 
 		//Test Case for wrong account no in data base
 		assertEquals(-2,BDAO.deleteAccount(104, 103,"Ankit", "080808"));
-		//			expected Id			  Name , Password
 	
 		//Test Case for correct account name and password in data base
 		assertEquals(0,BDAO.deleteAccount(103, 103,"Ankit", "80808"));
-		//			expected result		Name , Password
-		
+
 		//Test Case for correct account name and password in data base
 		assertEquals(1,BDAO.deleteAccount(103, 103,"Ankit", "1234"));
-		//			expected result		Name , Password
-		
 	}
 
 	
